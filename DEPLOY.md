@@ -90,9 +90,15 @@ services:
 4. Настройки:
    - **Name**: `workout-tracker-api`
    - **Environment**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn server_simple:app --host 0.0.0.0 --port $PORT`
+   - **Build Command**: `pip install -r requirements.txt` ⚠️ Это поле для команды сборки!
+   - **Start Command**: `uvicorn server_simple:app --host 0.0.0.0 --port $PORT` ⚠️ Это поле для команды запуска!
    - **Port**: Render автоматически установит `$PORT`
+   
+   ⚠️ **ЧАСТАЯ ОШИБКА**: 
+   - Не путайте поля! **Build Command** и **Start Command** - это для команд
+   - **Included Paths** (если видите внизу) - это для путей к файлам (`requirements.txt`, `server_simple.py`, и т.д.)
+   - НЕ вводите команды в поле **Included Paths** - там должны быть пути типа `*.py`, `requirements.txt`
+   - Если не уверены - оставьте **Included Paths** пустым
 
 ### 3.4. Настройте CORS в бэкенде
 В `server_simple.py` измените:
