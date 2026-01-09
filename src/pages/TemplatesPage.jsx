@@ -278,104 +278,110 @@ export default function TemplatesPage({ user }) {
 
       {/* Create/Edit Modal */}
       <Dialog open={showCreateModal} onOpenChange={closeModal}>
-        <DialogContent className="bg-zinc-900 border-white/10 max-w-lg mx-auto max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
+        <DialogContent className="bg-zinc-900 border-white/10 max-w-lg mx-auto max-h-[90vh] flex flex-col p-0 overflow-hidden">
+          {/* Зафиксированный заголовок */}
+          <DialogHeader className="p-6 pb-4 flex-shrink-0 border-b border-white/10">
             <DialogTitle className="text-white">
               {editingTemplate ? "Редактировать программу" : "Новая программа"}
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4">
-            {/* Template name */}
-            <div>
-              <label className="text-white/70 text-sm mb-2 block">Название</label>
-              <input
-                type="text"
-                value={templateName}
-                onChange={(e) => setTemplateName(e.target.value)}
-                placeholder="День ног, Push day..."
-                className="w-full glass-input px-4 py-3"
-              />
-            </div>
-
-            {/* Selected exercises */}
-            {selectedExercises.length > 0 && (
+          {/* Скроллируемый контент */}
+          <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-4" style={{ WebkitOverflowScrolling: 'touch', minHeight: 0 }}>
+            <div className="space-y-4">
+              {/* Template name */}
               <div>
-                <label className="text-white/70 text-sm mb-2 block">Упражнения</label>
-                <div className="space-y-2">
-                  {selectedExercises.map((ex) => (
-                    <div key={ex.exercise_id} className="glass-card p-3 flex items-center justify-between">
-                      <span className="text-white font-medium">{ex.exercise_name}</span>
-                      <button
-                        onClick={() => removeExerciseFromTemplate(ex.exercise_id)}
-                        className="text-red-400 hover:text-red-300"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Add exercises */}
-            <div>
-              <label className="text-white/70 text-sm mb-2 block">Добавить упражнения</label>
-              
-              {/* Create new exercise */}
-              <div className="flex gap-2 mb-3">
+                <label className="text-white/70 text-sm mb-2 block">Название</label>
                 <input
                   type="text"
-                  value={newExerciseName}
-                  onChange={(e) => setNewExerciseName(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && createAndAddExercise()}
-                  placeholder="Новое упражнение"
-                  className="flex-1 glass-input px-3 py-2 text-sm"
+                  value={templateName}
+                  onChange={(e) => setTemplateName(e.target.value)}
+                  placeholder="День ног, Push day..."
+                  className="w-full glass-input px-4 py-3"
                 />
-                <button
-                  onClick={createAndAddExercise}
-                  className="liquid-button px-4 py-2 flex items-center"
-                  title="Создать и добавить"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
               </div>
 
-              {/* Existing exercises list */}
-              {userExercises.length > 0 ? (
-                <div className="space-y-2 max-h-40 overflow-y-auto border-t border-white/10 pt-3">
-                  {userExercises.map((exercise) => {
-                    const isAdded = selectedExercises.find(e => e.exercise_id === exercise.id);
-                    return (
-                      <button
-                        key={exercise.id}
-                        onClick={() => !isAdded && addExerciseToTemplate(exercise)}
-                        disabled={isAdded}
-                        className={`w-full glass-card p-2 text-left text-sm transition-colors flex items-center justify-between ${
-                          isAdded 
-                            ? "opacity-50 cursor-not-allowed text-white/40" 
-                            : "text-white hover:bg-white/10 cursor-pointer"
-                        }`}
-                      >
-                        <span>{exercise.name}</span>
-                        {isAdded && (
-                          <span className="text-xs text-green-400">✓ Добавлено</span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="text-center py-4 text-white/40 text-sm border-t border-white/10 pt-3">
-                  Нет упражнений. Создайте новое выше ↑
+              {/* Selected exercises */}
+              {selectedExercises.length > 0 && (
+                <div>
+                  <label className="text-white/70 text-sm mb-2 block">Упражнения ({selectedExercises.length})</label>
+                  <div className="space-y-2">
+                    {selectedExercises.map((ex) => (
+                      <div key={ex.exercise_id} className="glass-card p-3 flex items-center justify-between">
+                        <span className="text-white font-medium">{ex.exercise_name}</span>
+                        <button
+                          onClick={() => removeExerciseFromTemplate(ex.exercise_id)}
+                          className="text-red-400 hover:text-red-300 touch-manipulation"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-            </div>
 
-            {/* Save button */}
+              {/* Add exercises */}
+              <div>
+                <label className="text-white/70 text-sm mb-2 block">Добавить упражнения</label>
+                
+                {/* Create new exercise */}
+                <div className="flex gap-2 mb-3">
+                  <input
+                    type="text"
+                    value={newExerciseName}
+                    onChange={(e) => setNewExerciseName(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && createAndAddExercise()}
+                    placeholder="Новое упражнение"
+                    className="flex-1 glass-input px-3 py-2 text-sm"
+                  />
+                  <button
+                    onClick={createAndAddExercise}
+                    className="liquid-button px-4 py-2 flex items-center touch-manipulation"
+                    title="Создать и добавить"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Existing exercises list */}
+                {userExercises.length > 0 ? (
+                  <div className="space-y-2 max-h-[200px] overflow-y-auto overscroll-contain border-t border-white/10 pt-3" style={{ WebkitOverflowScrolling: 'touch' }}>
+                    {userExercises.map((exercise) => {
+                      const isAdded = selectedExercises.find(e => e.exercise_id === exercise.id);
+                      return (
+                        <button
+                          key={exercise.id}
+                          onClick={() => !isAdded && addExerciseToTemplate(exercise)}
+                          disabled={isAdded}
+                          className={`w-full glass-card p-2 text-left text-sm transition-colors flex items-center justify-between touch-manipulation ${
+                            isAdded 
+                              ? "opacity-50 cursor-not-allowed text-white/40" 
+                              : "text-white hover:bg-white/10 cursor-pointer"
+                          }`}
+                        >
+                          <span>{exercise.name}</span>
+                          {isAdded && (
+                            <span className="text-xs text-green-400">✓ Добавлено</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="text-center py-4 text-white/40 text-sm border-t border-white/10 pt-3">
+                    Нет упражнений. Создайте новое выше ↑
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Зафиксированная кнопка внизу */}
+          <div className="p-6 pt-4 border-t border-white/10 flex-shrink-0">
             <button
               onClick={saveTemplate}
-              className="w-full liquid-button py-3 font-semibold"
+              className="w-full liquid-button py-3 font-semibold touch-manipulation"
             >
               {editingTemplate ? "Сохранить изменения" : "Создать программу"}
             </button>

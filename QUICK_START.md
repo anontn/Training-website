@@ -12,6 +12,7 @@
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
    - **Install Command**: `npm install`
+   - ⚠️ **ВАЖНО**: Убедитесь, что файл `vercel.json` находится в корне проекта и закоммичен в Git!
 5. **Environment Variables** (добавьте ПОСЛЕ деплоя бэкенда):
    ```
    VITE_BACKEND_URL=https://workout-tracker-api-ugge.onrender.com
