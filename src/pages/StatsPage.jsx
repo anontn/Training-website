@@ -4,8 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import BottomNav from "../components/BottomNav";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-
-const API = `${import.meta.env.VITE_BACKEND_URL}/api`;
+import { API } from "../utils/api";
 
 export default function StatsPage({ user }) {
   const navigate = useNavigate();

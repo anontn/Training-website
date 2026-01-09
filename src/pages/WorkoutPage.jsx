@@ -5,8 +5,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import BottomNav from "../components/BottomNav";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-
-const API = `${import.meta.env.VITE_BACKEND_URL}/api`;
+import { API } from "../utils/api";
 
 export default function WorkoutPage({ user }) {
   const navigate = useNavigate();

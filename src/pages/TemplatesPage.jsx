@@ -20,8 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../components/ui/alert-dialog";
-
-const API = `${import.meta.env.VITE_BACKEND_URL}/api`;
+import { API } from "../utils/api";
 
 export default function TemplatesPage({ user }) {
   const navigate = useNavigate();

@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus, History, BarChart3, Dumbbell, LogOut, ChevronRight } from "lucide-react";
 import axios from "axios";
 import BottomNav from "../components/BottomNav";
-
-const API = `${import.meta.env.VITE_BACKEND_URL}/api`;
+import { API } from "../utils/api";
 
 export default function DashboardPage({ user, onLogout }) {
   const navigate = useNavigate();

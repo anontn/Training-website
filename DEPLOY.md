@@ -186,12 +186,23 @@ sudo systemctl start workout-api
 npm install
 
 # Сборка проекта
-npm run build
+# ⚠️ ВАЖНО: Обязательно установите VITE_BACKEND_URL перед сборкой!
+# Если используете Nginx прокси (вариант А):
+echo "VITE_BACKEND_URL=" > .env.production
+# Или если бэкенд на отдельном домене/порту (вариант Б):
+# echo "VITE_BACKEND_URL=http://your-domain.com:8000" > .env.production
 
-# Создание .env
-echo "VITE_BACKEND_URL=http://YOUR_SERVER_IP:8000" > .env.production
 npm run build
 ```
+
+**Вариант А: Бэкенд через Nginx прокси (рекомендуется)**
+- Установите `VITE_BACKEND_URL=` (пустое значение)
+- Код автоматически будет использовать относительные пути `/api`
+- Бэкенд будет доступен через `your-domain.com/api`
+
+**Вариант Б: Бэкенд на отдельном порту**
+- Установите `VITE_BACKEND_URL=http://your-domain.com:8000`
+- Или `VITE_BACKEND_URL=http://YOUR_SERVER_IP:8000` если без домена
 
 ### Шаг 5: Настройка Nginx
 
@@ -199,7 +210,7 @@ npm run build
 sudo nano /etc/nginx/sites-available/workout-tracker
 ```
 
-Конфигурация:
+**Вариант А: С прокси для API (рекомендуется)**
 ```nginx
 server {
     listen 80;
@@ -211,9 +222,9 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    # Бэкенд API
+    # Бэкенд API через прокси
     location /api {
-        proxy_pass http://localhost:8000;
+        proxy_pass http://localhost:8000/api;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -222,6 +233,20 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+**Вариант Б: Без прокси (бэкенд на отдельном порту)**
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    # Только фронтенд
+    location / {
+        root /var/www/workout-tracker/dist;
+        try_files $uri $uri/ /index.html;
     }
 }
 ```
@@ -272,19 +297,28 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
+      args:
+        - VITE_BACKEND_URL=http://localhost:8000
     ports:
       - "3000:80"
-    environment:
-      - VITE_BACKEND_URL=http://localhost:8000
     depends_on:
       - backend
     restart: unless-stopped
 ```
 
+**⚠️ Важно для Docker:**
+- Если фронтенд и бэкенд в разных контейнерах, используйте имя сервиса: `VITE_BACKEND_URL=http://backend:8000`
+- Если бэкенд доступен снаружи: `VITE_BACKEND_URL=http://YOUR_SERVER_IP:8000`
+- Переменные окружения для Vite должны быть установлены во время сборки (через `args` в Dockerfile)
+
 ### Dockerfile для фронтенда:
 
 ```dockerfile
 FROM node:18-alpine AS build
+
+# Аргумент для URL бэкенда (можно переопределить при сборке)
+ARG VITE_BACKEND_URL=http://localhost:8000
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 WORKDIR /app
 
@@ -296,20 +330,32 @@ RUN npm run build
 
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Если нужен кастомный nginx.conf, раскомментируйте:
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+```
+
+**Сборка с кастомным URL:**
+```bash
+docker build --build-arg VITE_BACKEND_URL=http://your-backend-url:8000 -f Dockerfile.frontend -t workout-frontend .
 ```
 
 ---
 
 ## ⚠️ Важные замечания:
 
-1. **Переменные окружения**: Не забудьте настроить `VITE_BACKEND_URL` на фронтенде
-2. **CORS**: Настройте правильные домены в бэкенде
+1. **Переменные окружения**: 
+   - ⚠️ **ОБЯЗАТЕЛЬНО** установите `VITE_BACKEND_URL` в продакшене!
+   - Автоматическое определение работает только для локальной разработки
+   - В Vercel: Settings → Environment Variables → добавить `VITE_BACKEND_URL`
+   - В Docker: передайте через `--build-arg` при сборке
+   - В VPS: создайте `.env.production` перед `npm run build`
+2. **CORS**: Настройте правильные домены в бэкенде (`server_simple.py`)
 3. **HTTPS**: Используйте SSL сертификат (Let's Encrypt бесплатный)
 4. **База данных**: Сейчас данные хранятся в памяти - при перезапуске пропадут. Для продакшена лучше использовать реальную БД
+5. **Nginx прокси**: Если используете прокси для `/api`, установите `VITE_BACKEND_URL=` (пустое значение) для использования относительных путей
 
 ---
 

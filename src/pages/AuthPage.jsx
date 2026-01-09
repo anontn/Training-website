@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Dumbbell } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
-
-const API = `${import.meta.env.VITE_BACKEND_URL}/api`;
+import { API, BACKEND_URL } from "../utils/api";
 
 export default function AuthPage({ onLogin }) {
   const [name, setName] = useState("");
@@ -22,8 +21,19 @@ export default function AuthPage({ onLogin }) {
       toast.success(`Добро пожаловать, ${response.data.name}!`);
       onLogin(response.data);
     } catch (error) {
-      toast.error("Ошибка входа. Попробуйте снова.");
-      console.error(error);
+      // Более информативное сообщение об ошибке
+      if (error.code === "ECONNREFUSED" || error.message.includes("Network Error")) {
+        toast.error(
+          `Не удалось подключиться к серверу. Убедитесь, что бэкенд запущен на ${BACKEND_URL}`
+        );
+      } else if (error.response) {
+        // Сервер ответил, но с ошибкой
+        toast.error(`Ошибка сервера: ${error.response.data?.detail || error.response.statusText}`);
+      } else {
+        toast.error("Ошибка входа. Попробуйте снова.");
+      }
+      console.error("Ошибка при входе:", error);
+      console.error("API URL:", API);
     } finally {
       setLoading(false);
     }
