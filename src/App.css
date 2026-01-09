@@ -15,6 +15,14 @@
     position: relative;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    /* Включаем скролл для контента */
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Плавный скролл на мобильных */
+    -webkit-overflow-scrolling: touch;
+    /* Высота viewport */
+    height: 100vh;
+    height: 100dvh; /* Динамическая высота viewport для мобильных */
 }
 
 .neon-glow {
@@ -42,28 +50,33 @@
 
 .bottom-nav {
     position: fixed;
-    bottom: 24px;
-    left: 16px;
-    right: 16px;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: calc(100% - 32px);
+    width: 100%;
     max-width: 448px;
-    margin: 0 auto;
     height: 64px;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 32px;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    z-index: 50;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     /* Предотвращение дергания на мобильных */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    -webkit-transform: translateX(-50%) translateZ(0);
+    transform: translateX(-50%) translateZ(0);
     will-change: transform;
     /* Фиксация позиции при прокрутке */
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    /* Предотвращение скролла навигации */
+    touch-action: none;
+    pointer-events: auto;
 }
 
 .fade-in {

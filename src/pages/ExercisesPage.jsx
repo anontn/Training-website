@@ -73,18 +73,20 @@ export default function ExercisesPage({ user }) {
   return (
     <div className="app-container px-4 pt-6">
       <div className="fade-in">
-        <div className="flex items-center gap-4 mb-6">
+        {/* Зафиксированный заголовок */}
+        <div className="flex items-center gap-4 mb-6 flex-shrink-0">
           <button
             data-testid="back-button"
             onClick={() => navigate("/")}
-            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors touch-manipulation"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <h1 className="text-xl font-bold text-white">Мои упражнения</h1>
         </div>
 
-        <div className="glass-card p-4 mb-6">
+        {/* Зафиксированная форма добавления */}
+        <div className="glass-card p-4 mb-6 flex-shrink-0">
           <div className="flex gap-2">
             <input
               data-testid="new-exercise-input"
@@ -95,41 +97,44 @@ export default function ExercisesPage({ user }) {
               className="flex-1 glass-input px-4 py-3"
               onKeyPress={(e) => e.key === "Enter" && createExercise()}
             />
-            <button data-testid="add-exercise-btn" onClick={createExercise} className="liquid-button px-4 py-3">
+            <button data-testid="add-exercise-btn" onClick={createExercise} className="liquid-button px-4 py-3 touch-manipulation">
               <Plus className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {loading ? (
-          <div className="text-white/30 text-center py-20">Загрузка...</div>
-        ) : exercises.length === 0 ? (
-          <div className="text-center py-20">
-            <Dumbbell className="w-12 h-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/40">Нет упражнений</p>
-            <p className="text-white/30 text-sm">Добавьте первое упражнение</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {exercises.map((exercise) => (
-              <div key={exercise.id} className="glass-card p-4 flex items-center justify-between" data-testid={`exercise-item-${exercise.id}`}>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600/20 to-violet-600/20 flex items-center justify-center">
-                    <Dumbbell className="w-5 h-5 text-blue-400" />
+        {/* Скроллируемый список упражнений */}
+        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 280px)' }}>
+          {loading ? (
+            <div className="text-white/30 text-center py-20">Загрузка...</div>
+          ) : exercises.length === 0 ? (
+            <div className="text-center py-20">
+              <Dumbbell className="w-12 h-12 text-white/20 mx-auto mb-4" />
+              <p className="text-white/40">Нет упражнений</p>
+              <p className="text-white/30 text-sm">Добавьте первое упражнение</p>
+            </div>
+          ) : (
+            <div className="space-y-2 pb-4">
+              {exercises.map((exercise) => (
+                <div key={exercise.id} className="glass-card p-4 flex items-center justify-between" data-testid={`exercise-item-${exercise.id}`}>
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600/20 to-violet-600/20 flex items-center justify-center flex-shrink-0">
+                      <Dumbbell className="w-5 h-5 text-blue-400" />
+                    </div>
+                    <span className="text-white font-medium truncate">{exercise.name}</span>
                   </div>
-                  <span className="text-white font-medium">{exercise.name}</span>
+                  <button
+                    data-testid={`delete-exercise-${exercise.id}`}
+                    onClick={() => setDeleteId(exercise.id)}
+                    className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-red-500/20 transition-colors flex-shrink-0 touch-manipulation ml-2"
+                  >
+                    <Trash2 className="w-4 h-4 text-white/40" />
+                  </button>
                 </div>
-                <button
-                  data-testid={`delete-exercise-${exercise.id}`}
-                  onClick={() => setDeleteId(exercise.id)}
-                  className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-red-500/20 transition-colors"
-                >
-                  <Trash2 className="w-4 h-4 text-white/40" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>

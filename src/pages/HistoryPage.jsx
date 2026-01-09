@@ -83,28 +83,31 @@ export default function HistoryPage({ user }) {
 
   return (
     <div className="app-container px-4 pt-6">
-      <div className="fade-in">
-        <div className="flex items-center gap-4 mb-6">
+      <div className="fade-in flex flex-col h-full">
+        {/* Зафиксированный заголовок */}
+        <div className="flex items-center gap-4 mb-6 flex-shrink-0">
           <button
             data-testid="back-button"
             onClick={() => navigate("/")}
-            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors touch-manipulation"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <h1 className="text-xl font-bold text-white">История тренировок</h1>
         </div>
 
-        {loading ? (
-          <div className="text-white/30 text-center py-20">Загрузка...</div>
-        ) : workouts.length === 0 ? (
-          <div className="text-center py-20">
-            <Dumbbell className="w-12 h-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/40">История пуста</p>
-            <p className="text-white/30 text-sm">Начните первую тренировку</p>
-          </div>
-        ) : (
-          <div className="space-y-6 mb-6">
+        {/* Скроллируемый контент */}
+        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 200px)' }}>
+          {loading ? (
+            <div className="text-white/30 text-center py-20">Загрузка...</div>
+          ) : workouts.length === 0 ? (
+            <div className="text-center py-20">
+              <Dumbbell className="w-12 h-12 text-white/20 mx-auto mb-4" />
+              <p className="text-white/40">История пуста</p>
+              <p className="text-white/30 text-sm">Начните первую тренировку</p>
+            </div>
+          ) : (
+            <div className="space-y-6 pb-4">
             {Object.entries(groupedWorkouts).map(([month, monthWorkouts]) => (
               <div key={month}>
                 <h2 className="text-white/50 text-sm font-medium mb-3 capitalize">{month}</h2>

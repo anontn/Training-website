@@ -251,12 +251,13 @@ export default function WorkoutPage({ user }) {
 
   return (
     <div className="app-container px-4 pt-6">
-      <div className="fade-in">
-        <div className="flex items-center gap-4 mb-6">
+      <div className="fade-in flex flex-col h-full">
+        {/* Зафиксированный заголовок */}
+        <div className="flex items-center gap-4 mb-6 flex-shrink-0">
           <button
             data-testid="back-button"
             onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors touch-manipulation"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
@@ -266,11 +267,13 @@ export default function WorkoutPage({ user }) {
           </div>
         </div>
 
-        {loading ? (
-          <div className="text-white/30 text-center py-20">Загрузка...</div>
-        ) : (
-          <>
-            <div className="space-y-4 mb-6">
+        {/* Скроллируемый контент */}
+        <div className="flex-1 overflow-y-auto overscroll-contain mb-6" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 280px)' }}>
+          {loading ? (
+            <div className="text-white/30 text-center py-20">Загрузка...</div>
+          ) : (
+            <>
+              <div className="space-y-4 pb-4">
               {exercises.map((exercise) => (
                 <div key={exercise.exercise_id} className="glass-card p-4 slide-up" data-testid={`exercise-card-${exercise.exercise_id}`}>
                   <div className="flex items-center justify-between mb-4">
@@ -368,22 +371,26 @@ export default function WorkoutPage({ user }) {
               ))}
             </div>
 
-            <button
-              data-testid="add-exercise-btn"
-              onClick={() => setShowExerciseModal(true)}
-              className="w-full liquid-button py-4 font-semibold flex items-center justify-center gap-2 mb-6"
-            >
-              <Plus className="w-5 h-5" />
-              Добавить упражнение
-            </button>
-
-            {exercises.length === 0 && (
-              <div className="text-center text-white/30 py-10">
-                <p>Нажмите кнопку выше, чтобы добавить первое упражнение</p>
               </div>
-            )}
-          </>
-        )}
+
+              {exercises.length === 0 && (
+                <div className="text-center text-white/30 py-10">
+                  <p>Нажмите кнопку ниже, чтобы добавить первое упражнение</p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Зафиксированная кнопка добавления */}
+        <button
+          data-testid="add-exercise-btn"
+          onClick={() => setShowExerciseModal(true)}
+          className="w-full liquid-button py-4 font-semibold flex items-center justify-center gap-2 mb-6 flex-shrink-0 touch-manipulation"
+        >
+          <Plus className="w-5 h-5" />
+          Добавить упражнение
+        </button>
       </div>
 
       <Dialog open={showExerciseModal} onOpenChange={setShowExerciseModal}>
@@ -413,13 +420,13 @@ export default function WorkoutPage({ user }) {
             {userExercises.length > 0 && (
               <div className="border-t border-white/10 pt-4">
                 <p className="text-white/40 text-sm mb-2">Ваши упражнения:</p>
-                <div className="space-y-2 max-h-60 overflow-y-auto">
+                <div className="space-y-2 max-h-[40vh] overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
                   {userExercises.map((exercise) => (
                     <button
                       key={exercise.id}
                       data-testid={`select-exercise-${exercise.id}`}
                       onClick={() => addExerciseToWorkout(exercise)}
-                      className="w-full glass-card p-3 text-left text-white hover:bg-white/10 transition-colors flex items-center justify-between"
+                      className="w-full glass-card p-3 text-left text-white hover:bg-white/10 transition-colors flex items-center justify-between touch-manipulation"
                     >
                       <span>{exercise.name}</span>
                       <Check className="w-4 h-4 text-white/30" />

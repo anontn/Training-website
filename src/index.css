@@ -149,10 +149,18 @@ input[type="number"] {
 
 /* Мобильные стили для предотвращения дергания */
 @media (max-width: 768px) {
-    body {
+    html, body {
         /* Предотвращение прокрутки фона */
-        position: relative;
+        width: 100%;
         overflow-x: hidden;
+        /* Предотвращение масштабирования */
+        touch-action: pan-x pan-y;
+    }
+    
+    #root {
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
     }
     
     input[type="number"], 

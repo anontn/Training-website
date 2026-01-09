@@ -74,17 +74,21 @@ export default function StatsPage({ user }) {
 
   return (
     <div className="app-container px-4 pt-6">
-      <div className="fade-in">
-        <div className="flex items-center gap-4 mb-6">
+      <div className="fade-in flex flex-col h-full">
+        {/* Зафиксированный заголовок */}
+        <div className="flex items-center gap-4 mb-6 flex-shrink-0">
           <button
             data-testid="back-button"
             onClick={() => navigate("/")}
-            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors touch-manipulation"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <h1 className="text-xl font-bold text-white">Статистика</h1>
         </div>
+
+        {/* Скроллируемый контент */}
+        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 200px)' }}>
 
         {loading ? (
           <div className="text-white/30 text-center py-20">Загрузка...</div>
@@ -167,6 +171,7 @@ export default function StatsPage({ user }) {
             )}
           </>
         )}
+        </div>
       </div>
 
       <BottomNav active="stats" />

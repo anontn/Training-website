@@ -187,39 +187,40 @@ export default function TemplatesPage({ user }) {
 
   return (
     <div className="app-container px-4 pt-6">
-      <div className="fade-in">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
+      <div className="fade-in flex flex-col h-full">
+        {/* Зафиксированный заголовок */}
+        <div className="flex items-center gap-4 mb-6 flex-shrink-0">
           <button
             data-testid="back-button"
             onClick={() => navigate("/")}
-            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors touch-manipulation"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <h1 className="text-xl font-bold text-white">Программы тренировок</h1>
         </div>
 
-        {/* Create button */}
+        {/* Зафиксированная кнопка создания */}
         <button
           onClick={openCreateModal}
-          className="w-full liquid-button py-4 font-semibold flex items-center justify-center gap-2 mb-6"
+          className="w-full liquid-button py-4 font-semibold flex items-center justify-center gap-2 mb-6 flex-shrink-0 touch-manipulation"
         >
           <Plus className="w-5 h-5" />
           Создать программу
         </button>
 
-        {/* Templates list */}
-        {loading ? (
-          <div className="text-white/30 text-center py-20">Загрузка...</div>
-        ) : templates.length === 0 ? (
-          <div className="text-center py-20">
-            <Dumbbell className="w-12 h-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/40">Нет программ</p>
-            <p className="text-white/30 text-sm">Создайте свою первую программу</p>
-          </div>
-        ) : (
-          <div className="space-y-3 mb-6">
+        {/* Скроллируемый список шаблонов */}
+        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 280px)' }}>
+          {loading ? (
+            <div className="text-white/30 text-center py-20">Загрузка...</div>
+          ) : templates.length === 0 ? (
+            <div className="text-center py-20">
+              <Dumbbell className="w-12 h-12 text-white/20 mx-auto mb-4" />
+              <p className="text-white/40">Нет программ</p>
+              <p className="text-white/30 text-sm">Создайте свою первую программу</p>
+            </div>
+          ) : (
+            <div className="space-y-3 pb-4">
             {templates.map((template) => (
               <div
                 key={template.id}
@@ -271,9 +272,9 @@ export default function TemplatesPage({ user }) {
                 </button>
               </div>
             ))}
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
 
       {/* Create/Edit Modal */}
       <Dialog open={showCreateModal} onOpenChange={closeModal}>
