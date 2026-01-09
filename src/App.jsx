@@ -41,7 +41,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black" style={{ height: '100vh', height: '100dvh', overflow: 'hidden' }}>
       <div className="neon-glow blue" />
       <div className="neon-glow violet" />
       <BrowserRouter>

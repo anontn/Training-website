@@ -65,7 +65,7 @@ export default function DashboardPage({ user, onLogout }) {
         </div>
 
         {/* Скроллируемый контент */}
-        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 240px)' }}>
+        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', minHeight: 0 }}>
 
         <div className="glass-card p-6 mb-6">
           <div className="flex items-center justify-between mb-4">

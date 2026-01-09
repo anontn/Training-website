@@ -40,7 +40,7 @@ export default function AuthPage({ onLogin }) {
   };
 
   return (
-    <div className="app-container flex flex-col items-center justify-center min-h-screen px-6">
+    <div className="app-container flex flex-col items-center justify-center px-6" style={{ height: '100vh', height: '100dvh' }}>
       <div className="fade-in w-full max-w-sm">
         <div className="flex flex-col items-center mb-12">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30">

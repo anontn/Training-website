@@ -88,7 +88,7 @@ export default function StatsPage({ user }) {
         </div>
 
         {/* Скроллируемый контент */}
-        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 200px)' }}>
+        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', minHeight: 0 }}>
 
         {loading ? (
           <div className="text-white/30 text-center py-20">Загрузка...</div>

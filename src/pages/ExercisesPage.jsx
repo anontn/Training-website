@@ -72,9 +72,9 @@ export default function ExercisesPage({ user }) {
 
   return (
     <div className="app-container px-4 pt-6">
-      <div className="fade-in">
+      <div className="fade-in flex flex-col h-full">
         {/* Зафиксированный заголовок */}
-        <div className="flex items-center gap-4 mb-6 flex-shrink-0">
+        <div className="flex items-center gap-4 mb-6 flex-shrink-0 pt-safe">
           <button
             data-testid="back-button"
             onClick={() => navigate("/")}
@@ -104,7 +104,7 @@ export default function ExercisesPage({ user }) {
         </div>
 
         {/* Скроллируемый список упражнений */}
-        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', maxHeight: 'calc(100vh - 280px)' }}>
+        <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch', minHeight: 0 }}>
           {loading ? (
             <div className="text-white/30 text-center py-20">Загрузка...</div>
           ) : exercises.length === 0 ? (

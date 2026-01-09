@@ -2,27 +2,24 @@
 .app-container {
     max-width: 480px;
     margin: 0 auto;
-    min-height: 100vh;
-    padding-bottom: 100px;
     /* Фиксация ширины на мобильных */
     width: 100%;
     box-sizing: border-box;
     /* Предотвращение дергания */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: scroll-position;
     /* Фиксация размера при прокрутке */
     position: relative;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    /* Включаем скролл для контента */
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* Плавный скролл на мобильных */
-    -webkit-overflow-scrolling: touch;
-    /* Высота viewport */
+    /* Высота viewport - занимает весь экран */
     height: 100vh;
     height: 100dvh; /* Динамическая высота viewport для мобильных */
+    /* Убираем overflow отсюда - скролл будет на внутренних элементах */
+    overflow: hidden;
+    /* Flex для правильной структуры */
+    display: flex;
+    flex-direction: column;
 }
 
 .neon-glow {
