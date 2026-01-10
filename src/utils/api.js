@@ -21,11 +21,11 @@ function getBackendUrl() {
   
   // Если открыто с IP адреса (не localhost), используем тот же IP для бэкенда
   if (hostname !== "localhost" && hostname !== "127.0.0.1") {
-    return `http://${hostname}:8000`;
+    return `http://${hostname}:3000`;
   }
   
   // По умолчанию localhost
-  return "http://localhost:8000";
+  return "http://localhost:3000";
 }
 
 export const BACKEND_URL = getBackendUrl();

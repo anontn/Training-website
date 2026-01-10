@@ -8,7 +8,7 @@ export default function BottomNav({ active }) {
     { id: "home", icon: Home, label: "Главная", path: "/" },
     { id: "workout", icon: Dumbbell, label: "Тренировка", path: "/workout" },
     { id: "history", icon: History, label: "История", path: "/history" },
-    { id: "stats", icon: BarChart3, label: "Статистика", path: "/stats" },
+    { id: "stats", icon: BarChart3, label: "Стата", path: "/stats" },
   ];
 
   return (

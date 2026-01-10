@@ -371,9 +371,7 @@ export default function WorkoutPage({ user }) {
               ))}
             </div>
 
-              </div>
-
-              {exercises.length === 0 && (
+            {exercises.length === 0 && (
                 <div className="text-center text-white/30 py-10">
                   <p>Нажмите кнопку ниже, чтобы добавить первое упражнение</p>
                 </div>

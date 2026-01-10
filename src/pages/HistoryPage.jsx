@@ -142,11 +142,11 @@ export default function HistoryPage({ user }) {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
 
-      <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
+        <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent className="bg-zinc-900 border-white/10">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-white">Удалить тренировку?</AlertDialogTitle>
@@ -166,6 +166,7 @@ export default function HistoryPage({ user }) {
       </AlertDialog>
 
       <BottomNav active="history" />
+      </div>
     </div>
   );
 }

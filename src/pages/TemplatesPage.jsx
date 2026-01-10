@@ -410,6 +410,7 @@ export default function TemplatesPage({ user }) {
       </AlertDialog>
 
       <BottomNav active="exercises" />
+      </div>
     </div>
   );
 }
